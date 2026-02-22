@@ -1,0 +1,79 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: payment-processor-app
+    container_name: payment-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - payment-network
+    depends_on:
+      - postgres
+      - redis
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: payment-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - payment-network
+    depends_on:
+      - app
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: payment-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - payment-network
+
+  redis:
+    image: redis:alpine
+    container_name: payment-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    networks:
+      - payment-network
+
+  horizon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: payment-processor-app
+    container_name: payment-horizon
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    command: php artisan horizon
+    networks:
+      - payment-network
+    depends_on:
+      - app
+      - redis
+
+networks:
+  payment-network:
+    driver: bridge
+
+volumes:
+  dbdata:

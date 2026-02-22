@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-surface-950 text-surface-200 antialiased font-sans selection:bg-brand-500 selection:text-white;
+        background-image:
+            radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+            radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.1) 0, transparent 50%),
+            radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.1) 0, transparent 50%);
+        min-height: 100vh;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply text-white font-semibold tracking-tight;
+    }
+}
+
+@layer components {
+    .glass-card {
+        @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-glass;
+    }
+
+    .glass-input {
+        @apply bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all placeholder:text-surface-500;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-r from-brand-600 to-brand-500 text-white font-medium px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-brand-500/20 active:scale-95 transition-all;
+    }
+
+    .btn-secondary {
+        @apply bg-white/5 border border-white/10 text-white font-medium px-6 py-3 rounded-xl hover:bg-white/10 active:scale-95 transition-all backdrop-blur-sm;
+    }
+
+    .status-badge {
+        @apply px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap inline-flex items-center justify-center;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-surface-950;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-surface-800 rounded-full hover:bg-surface-700 transition-colors;
+}
+
+/* Hide spin buttons for input type number bg-surface-500 font-medium */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
