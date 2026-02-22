@@ -29,7 +29,7 @@ class PaymentService
             $totalAmount = $dto->amount + $commission;
 
             if ($user->balance < $totalAmount) {
-                throw new InsufficientBalanceException("Insufficient balance. Required: {$totalAmount}, Available: {$user->balance}");
+                throw new InsufficientBalanceException("Маблағи шумо барои иҷрои ин амалиёт кофӣ нест. Баланси ҷорӣ: {$user->balance} TJS");
             }
 
             $balanceBefore = $user->balance;

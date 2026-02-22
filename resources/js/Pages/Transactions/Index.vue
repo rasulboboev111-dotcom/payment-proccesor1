@@ -27,24 +27,24 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-white/5">
-              <tr v-for="tx in transactions" :key="tx.id" class="hover:bg-white/5 transition-all">
+              <tr v-for="tx in transactions" :key="tx.id" class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
                 <td class="px-6 py-4">
-                  <div class="font-medium text-white">{{ tx.user?.name || 'Истифодабарандаи номаълум' }}</div>
-                  <div class="text-xs text-brand-400 font-mono">ID: #{{ tx.id }}</div>
+                  <div class="font-medium text-slate-900 dark:text-white">{{ tx.user?.name || 'Истифодабарандаи номаълум' }}</div>
+                  <div class="text-xs text-brand-600 dark:text-brand-400 font-mono">ID: #{{ tx.id }}</div>
                 </td>
-                <td class="px-6 py-4 text-right text-surface-400">
+                <td class="px-6 py-4 text-right text-slate-500 dark:text-surface-400">
                     {{ formatNumber(tx.balance_before) }}
                 </td>
-                <td class="px-6 py-4 text-right font-medium text-white">
+                <td class="px-6 py-4 text-right font-medium text-slate-900 dark:text-white">
                     {{ formatNumber(tx.amount) }}
                 </td>
-                <td class="px-6 py-4 text-right text-amber-400/80 text-sm">
+                <td class="px-6 py-4 text-right text-amber-600 dark:text-amber-400/80 text-sm">
                     {{ formatNumber(tx.commission) }}
                 </td>
-                <td class="px-6 py-4 text-right font-bold text-brand-400">
+                <td class="px-6 py-4 text-right font-bold text-brand-600 dark:text-brand-400">
                     {{ formatNumber(parseFloat(tx.amount) + parseFloat(tx.commission)) }}
                 </td>
-                <td class="px-6 py-4 text-right text-surface-400">
+                <td class="px-6 py-4 text-right text-slate-500 dark:text-surface-400">
                     {{ formatNumber(tx.balance_after) }}
                 </td>
                 <td class="px-6 py-4 text-center">
@@ -53,7 +53,7 @@
                   </span>
                 </td>
                 <td class="px-6 py-4">
-                    <div class="text-sm font-mono text-surface-400 max-w-[120px] truncate" :title="tx.external_reference">
+                    <div class="text-sm font-mono text-slate-500 dark:text-surface-400 max-w-[120px] truncate" :title="tx.external_reference">
                         {{ tx.external_reference || '...' }}
                     </div>
                 </td>

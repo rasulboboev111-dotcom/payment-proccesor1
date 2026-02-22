@@ -19,12 +19,12 @@
       <div class="glass-card p-8">
         <form @submit.prevent="submit" class="space-y-6">
           <div class="space-y-2">
-            <label for="name" class="block text-sm font-medium text-surface-300">Ном</label>
+            <label for="name" class="block text-sm font-medium text-slate-500 dark:text-surface-300">Ном</label>
             <input
               id="name"
               v-model="form.name"
               type="text"
-              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-500/50 transition-all"
+              class="glass-input w-full"
               placeholder="Номи пурра"
               required
             />
@@ -32,12 +32,12 @@
           </div>
 
           <div class="space-y-2">
-            <label for="email" class="block text-sm font-medium text-surface-300">Email</label>
+            <label for="email" class="block text-sm font-medium text-slate-500 dark:text-surface-300">Email</label>
             <input
               id="email"
               v-model="form.email"
               type="email"
-              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-500/50 transition-all"
+              class="glass-input w-full"
               placeholder="tsoy@example.com"
               required
             />
@@ -45,7 +45,7 @@
           </div>
 
           <div class="space-y-2">
-            <label for="balance" class="block text-sm font-medium text-surface-300">Баланси аввалия</label>
+            <label for="balance" class="block text-sm font-medium text-slate-500 dark:text-surface-300">Баланси аввалия</label>
             <div class="relative">
               <input
                 id="balance"
@@ -53,7 +53,7 @@
                 type="number"
                 step="0.01"
                 min="0"
-                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-500/50 transition-all"
+                class="glass-input w-full"
                 placeholder="0.00"
                 required
               />

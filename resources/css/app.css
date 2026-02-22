@@ -4,12 +4,18 @@
 
 @layer base {
     body {
-        @apply bg-surface-950 text-surface-200 antialiased font-sans selection:bg-brand-500 selection:text-white;
+        @apply bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-surface-200 antialiased font-sans transition-colors duration-300;
+        background-image:
+            radial-gradient(at 0% 0%, hsla(210, 100%, 98%, 1) 0, transparent 50%),
+            radial-gradient(at 100% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%);
+        min-height: 100vh;
+    }
+
+    .dark body {
         background-image:
             radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
             radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.1) 0, transparent 50%),
             radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.1) 0, transparent 50%);
-        min-height: 100vh;
     }
 
     h1,
@@ -18,17 +24,17 @@
     h4,
     h5,
     h6 {
-        @apply text-white font-semibold tracking-tight;
+        @apply text-surface-950 dark:text-white font-semibold tracking-tight;
     }
 }
 
 @layer components {
     .glass-card {
-        @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-glass;
+        @apply bg-white/70 dark:bg-white/5 backdrop-blur-md border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-glass transition-all;
     }
 
     .glass-input {
-        @apply bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all placeholder:text-surface-500;
+        @apply bg-white/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-xl px-4 py-3 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all placeholder:text-surface-400 dark:placeholder:text-surface-500;
     }
 
     .btn-primary {
@@ -36,7 +42,7 @@
     }
 
     .btn-secondary {
-        @apply bg-white/5 border border-white/10 text-white font-medium px-6 py-3 rounded-xl hover:bg-white/10 active:scale-95 transition-all backdrop-blur-sm;
+        @apply bg-white/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 text-surface-900 dark:text-white font-medium px-6 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 active:scale-95 transition-all backdrop-blur-sm shadow-sm;
     }
 
     .status-badge {

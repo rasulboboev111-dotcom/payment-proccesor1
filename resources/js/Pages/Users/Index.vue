@@ -34,20 +34,20 @@
               <tr v-for="user in users" :key="user.id" class="hover:bg-white/5 transition-all">
                 <td class="px-6 py-4">
                   <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-400 font-bold">
+                    <div class="w-10 h-10 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-600 dark:text-brand-400 font-bold">
                         {{ user.name.charAt(0) }}
                     </div>
-                    <div class="font-medium text-white">{{ user.name }}</div>
+                    <div class="font-medium text-slate-900 dark:text-white">{{ user.name }}</div>
                   </div>
                 </td>
-                <td class="px-6 py-4 text-surface-400">
+                <td class="px-6 py-4 text-slate-500 dark:text-surface-400">
                     {{ user.email }}
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <div class="text-sm font-medium text-surface-400">{{ formatNumber(user.initial_balance) }}</div>
+                    <div class="text-sm font-medium text-slate-500 dark:text-surface-400">{{ formatNumber(user.initial_balance) }}</div>
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <div class="text-lg font-bold text-white">{{ formatNumber(user.balance) }} <span class="text-xs text-surface-500">TJS</span></div>
+                    <div class="text-lg font-bold text-slate-900 dark:text-white">{{ formatNumber(user.balance) }} <span class="text-xs text-slate-500 dark:text-surface-500">TJS</span></div>
                 </td>
                 <td class="px-6 py-4 text-sm text-surface-500">
                     {{ formatDate(user.created_at) }}

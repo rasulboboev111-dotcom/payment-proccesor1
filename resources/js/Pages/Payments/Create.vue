@@ -21,8 +21,8 @@
             <label class="text-sm font-medium text-surface-400 ml-1">Интихоби истифодабаранда</label>
             <div class="relative">
               <select v-model="form.user_id" class="glass-input w-full appearance-none pr-10">
-                <option value="" disabled class="bg-surface-900">Қабулкунандаро интихоб кунед...</option>
-                <option v-for="user in users" :key="user.id" :value="user.id" class="bg-surface-900">
+                <option value="" disabled class="bg-white dark:bg-surface-900 text-slate-900 dark:text-white">Қабулкунандаро интихоб кунед...</option>
+                <option v-for="user in users" :key="user.id" :value="user.id" class="bg-white dark:bg-surface-900 text-slate-900 dark:text-white">
                   {{ user.name }} (Баланс: {{ formatNumber(user.balance) }} TJS)
                 </option>
               </select>
@@ -48,14 +48,14 @@
             </div>
             
             <!-- Real-time Commission and Total -->
-            <div v-if="form.amount > 0" class="mt-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div v-if="form.amount > 0" class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-surface-800/50 border border-slate-200/50 dark:border-white/5 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
               <div class="flex justify-between text-sm">
-                <span class="text-surface-400">Комиссия (2%):</span>
-                <span class="text-surface-200 font-mono">{{ formatNumber(commission) }} TJS</span>
+                <span class="text-slate-500 dark:text-surface-400">Комиссия (2%):</span>
+                <span class="text-slate-900 dark:text-surface-200 font-mono">{{ formatNumber(commission) }} TJS</span>
               </div>
               <div class="flex justify-between text-base font-bold">
-                <span class="text-surface-200">Ҳамагӣ барои пардохт:</span>
-                <span class="text-brand-400 font-mono">{{ formatNumber(totalAmount) }} TJS</span>
+                <span class="text-slate-900 dark:text-surface-200">Ҳамагӣ барои пардохт:</span>
+                <span class="text-brand-600 dark:text-brand-400 font-mono">{{ formatNumber(totalAmount) }} TJS</span>
               </div>
             </div>
             <p v-else class="text-xs text-surface-500 ml-1 mt-1">Барои ин транзаксия 2% комиссия ҳисоб карда мешавад.</p>
@@ -167,7 +167,7 @@ const submit = () => {
         router.visit('/');
     }, 2000);
   }).catch(err => {
-    error.value = err.response?.data?.message || 'Something went wrong. Please try again.';
+    error.value = err.response?.data?.error || err.response?.data?.message || 'Хатогӣ рӯй дод. Лутфан дубора кӯшиш кунед.';
   }).finally(() => {
     processing.value = false;
   });
