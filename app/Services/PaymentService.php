@@ -28,7 +28,12 @@ class PaymentService
             $commission = 0;
             $totalAmount = $dto->amount;
 
-            if ($dto->type === 'withdrawal') {
+            if ($dto->type === 'payment') {
+                $commission = $dto->amount * self::COMMISSION_RATE;
+                $totalAmount = $dto->amount + $commission;
+            }
+
+            if ($dto->type === 'withdrawal' || $dto->type === 'payment') {
                 if ($user->balance < $totalAmount) {
                     throw new InsufficientBalanceException("Маблағи шумо кам аст.");
                 }

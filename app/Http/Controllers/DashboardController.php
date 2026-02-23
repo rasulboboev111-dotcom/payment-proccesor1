@@ -10,8 +10,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
+        $users = User::select('id', 'name', 'balance')->get();
+        $recentTransactions = Transaction::with(['user' => function($query) {
+            $query->select('id', 'name');
+        }])->latest()->take(5)->get();
 
         // Analytics Data
         $last30Days = now()->subDays(30);
@@ -40,14 +42,14 @@ class DashboardController extends Controller
     public function createPayment()
     {
         return Inertia::render('Payments/Create', [
-            'users' => User::all()
+            'users' => User::select('id', 'name', 'balance')->get()
         ]);
     }
 
     public function transactions()
     {
         return Inertia::render('Transactions/Index', [
-            'transactions' => Transaction::with('user')->latest()->get()
+            'transactions' => Transaction::with('user')->latest()->paginate(10)
         ]);
     }
 }
