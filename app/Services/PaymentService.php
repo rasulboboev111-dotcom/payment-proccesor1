@@ -25,32 +25,40 @@ class PaymentService
             // Pessimistic lock on user balance
             $user = User::where('id', $dto->userId)->lockForUpdate()->firstOrFail();
 
-            $commission = $dto->amount * self::COMMISSION_RATE;
-            $totalAmount = $dto->amount + $commission;
+            $commission = 0;
+            $totalAmount = $dto->amount;
 
-            if ($user->balance < $totalAmount) {
-                throw new InsufficientBalanceException("Маблағи шумо кам аст.");
+            if ($dto->type === 'withdrawal') {
+                if ($user->balance < $totalAmount) {
+                    throw new InsufficientBalanceException("Маблағи шумо кам аст.");
+                }
             }
 
             $balanceBefore = $user->balance;
-            $balanceAfter = $user->balance - $totalAmount;
+            $balanceAfter = $dto->type === 'deposit' 
+                ? $user->balance + $dto->amount 
+                : $user->balance - $totalAmount;
 
-            // Create pending transaction
+            // Create transaction
             $transaction = Transaction::create([
                 'user_id' => $user->id,
+                'type' => $dto->type,
                 'amount' => $dto->amount,
                 'commission' => $commission,
                 'balance_before' => $balanceBefore,
                 'balance_after' => $balanceAfter,
-                'status' => 'pending',
+                'status' => $dto->type === 'deposit' ? 'success' : 'pending',
                 'idempotency_key' => $dto->idempotencyKey,
             ]);
 
-            // Deduct balance
-            $user->decrement('balance', $totalAmount);
-
-            // Dispatch job for async gateway processing
-            ProcessPaymentJob::dispatch($transaction);
+            // Adjust balance
+            if ($dto->type === 'deposit') {
+                $user->increment('balance', $dto->amount);
+            } else {
+                $user->decrement('balance', $totalAmount);
+                // Dispatch job for async gateway processing only for withdrawals
+                ProcessPaymentJob::dispatch($transaction);
+            }
 
             return $transaction;
         });

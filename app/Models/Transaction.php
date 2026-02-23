@@ -8,6 +8,7 @@ class Transaction extends Model
 {
     protected $fillable = [
         'user_id',
+        'type',
         'amount',
         'commission',
         'balance_before',

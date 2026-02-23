@@ -16,6 +16,7 @@ class PaymentRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0.01',
+            'type' => 'required|in:withdrawal,deposit',
         ];
     }
 }

@@ -34,6 +34,42 @@
             </div>
           </div>
 
+          <div class="space-y-4">
+            <label class="text-sm font-medium text-surface-400 ml-1">Намуди транзаксия</label>
+            <div class="grid grid-cols-2 gap-4">
+              <button 
+                type="button"
+                @click="form.type = 'deposit'"
+                :class="[
+                  'p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
+                  form.type === 'deposit' 
+                    ? 'bg-brand-500/10 border-brand-500/50 text-brand-400' 
+                    : 'glass-card border-white/5 text-surface-400 hover:bg-white/5'
+                ]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span class="font-medium">Зиёд кардан</span>
+              </button>
+              <button 
+                type="button"
+                @click="form.type = 'withdrawal'"
+                :class="[
+                  'p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
+                  form.type === 'withdrawal' 
+                    ? 'bg-amber-500/10 border-amber-500/50 text-amber-400' 
+                    : 'glass-card border-white/5 text-surface-400 hover:bg-white/5'
+                ]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                </svg>
+                <span class="font-medium">Кам кардан</span>
+              </button>
+            </div>
+          </div>
+
           <div class="space-y-2">
             <label class="text-sm font-medium text-surface-400 ml-1">Маблағ</label>
             <div class="relative">
@@ -49,23 +85,17 @@
             
             <!-- Real-time Commission and Total -->
             <div v-if="form.amount > 0" class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-surface-800/50 border border-slate-200/50 dark:border-white/5 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div class="flex justify-between text-sm">
-                <span class="text-slate-500 dark:text-surface-400">Комиссия (2%):</span>
-                <span class="text-slate-900 dark:text-surface-200 font-mono">{{ formatNumber(commission) }} TJS</span>
-              </div>
-              <div class="flex justify-between text-base font-bold">
-                <span class="text-slate-900 dark:text-surface-200">Ҳамагӣ барои пардохт:</span>
-                <span class="text-brand-600 dark:text-brand-400 font-mono">{{ formatNumber(totalAmount) }} TJS</span>
+                <span :class="[form.type === 'deposit' ? 'text-emerald-400' : 'text-brand-600 dark:text-brand-400', 'font-mono']">
+                  {{ formatNumber(totalAmount) }} TJS
+                </span>
               </div>
             </div>
-            <p v-else class="text-xs text-surface-500 ml-1 mt-1">Барои ин транзаксия 2% комиссия ҳисоб карда мешавад.</p>
-          </div>
 
           <div v-if="success" class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-xl flex items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p>Пардохт оғоз ёфт! Шумо метавонед онро дар таърих пайгирӣ кунед.</p>
+            <p>Транзаксия бомуваффақият иҷро шуд!</p>
           </div>
 
           <div v-if="error" class="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl flex items-center gap-3">
@@ -87,7 +117,7 @@
               </svg>
               Дар коркард...
             </span>
-            <span v-else>Тасдиқ ва пардохт</span>
+            <span v-else>Иҷро кардан</span>
           </button>
         </form>
       </div>
@@ -113,16 +143,14 @@ defineProps({
   users: Array
 });
 
-const COMMISSION_RATE = 0.02;
-
 const form = reactive({
   user_id: '',
-  amount: ''
+  amount: '',
+  type: 'withdrawal'
 });
 
 const commission = computed(() => {
-  const amt = parseFloat(form.amount) || 0;
-  return amt * COMMISSION_RATE;
+  return 0;
 });
 
 const totalAmount = computed(() => {
@@ -147,7 +175,7 @@ const formatNumber = (num) => {
 
 const submit = () => {
   if (!form.user_id || !form.amount) {
-    error.value = 'Please select a user and enter an amount.';
+    error.value = 'Лутфан истифодабаранда ва маблағро интихоб кунед.';
     return;
   }
 
@@ -161,7 +189,7 @@ const submit = () => {
     }
   }).then(response => {
     success.value = true;
-    form.userId = '';
+    form.user_id = '';
     form.amount = '';
     setTimeout(() => {
         router.visit('/');
