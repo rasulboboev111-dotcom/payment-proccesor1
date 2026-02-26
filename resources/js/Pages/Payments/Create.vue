@@ -3,13 +3,13 @@
     <div class="max-w-2xl mx-auto space-y-8">
       <!-- Header -->
       <div class="flex items-center gap-4">
-        <Link href="/" class="p-2 glass-card hover:bg-white/10 transition-all text-surface-400 hover:text-white">
+        <Link :href="preselectedType ? '/users' : '/'" class="p-2 glass-card hover:bg-white/10 transition-all text-surface-400 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
         <div>
-          <h1 class="text-3xl font-bold">Пардохти нав</h1>
+          <h1 class="text-3xl font-bold">{{ pageTitle }}</h1>
           <p class="text-surface-400 mt-1">Транзаксияи бехатари пардохтро оғоз кунед.</p>
         </div>
       </div>
@@ -20,7 +20,7 @@
           <div class="space-y-2">
             <label class="text-sm font-medium text-surface-400 ml-1">Интихоби истифодабаранда</label>
             <div class="relative">
-              <select v-model="form.user_id" class="glass-input w-full appearance-none pr-10">
+              <select v-model="form.user_id" :disabled="!!preselectedUserId" class="glass-input w-full appearance-none pr-10" :class="{ 'opacity-70': !!preselectedUserId }">
                 <option value="" disabled class="bg-white dark:bg-surface-900 text-slate-900 dark:text-white">Қабулкунандаро интихоб кунед...</option>
                 <option v-for="user in users" :key="user.id" :value="user.id" class="bg-white dark:bg-surface-900 text-slate-900 dark:text-white">
                   {{ user.name }} (Баланс: {{ formatNumber(user.balance) }} TJS)
@@ -34,54 +34,28 @@
             </div>
           </div>
 
-          <div class="space-y-4">
+          <!-- Type badge for preselected type (deposit/withdrawal from Users table) -->
+          <div v-if="preselectedType" class="space-y-2">
             <label class="text-sm font-medium text-surface-400 ml-1">Намуди транзаксия</label>
-            <div class="grid grid-cols-3 gap-4">
-              <button 
-                type="button"
-                @click="form.type = 'deposit'"
-                :class="[
-                  'p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
-                  form.type === 'deposit' 
-                    ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400' 
-                    : 'glass-card border-white/5 text-surface-400 hover:bg-white/5'
-                ]"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span class="font-medium text-xs">Зиёд кардан</span>
-              </button>
-              <button 
-                type="button"
-                @click="form.type = 'withdrawal'"
-                :class="[
-                  'p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
-                  form.type === 'withdrawal' 
-                    ? 'bg-amber-500/10 border-amber-500/50 text-amber-400' 
-                    : 'glass-card border-white/5 text-surface-400 hover:bg-white/5'
-                ]"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                </svg>
-                <span class="font-medium text-xs">Кам кардан</span>
-              </button>
-              <button 
-                type="button"
-                @click="form.type = 'payment'"
-                :class="[
-                  'p-4 rounded-xl border transition-all flex flex-col items-center gap-2',
-                  form.type === 'payment' 
-                    ? 'bg-brand-500/10 border-brand-500/50 text-brand-400' 
-                    : 'glass-card border-white/5 text-surface-400 hover:bg-white/5'
-                ]"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span class="font-medium text-xs">Пардохт (2%)</span>
-              </button>
+            <div class="p-4 rounded-xl border flex items-center gap-3" :class="preselectedType === 'deposit' ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400' : 'bg-amber-500/10 border-amber-500/50 text-amber-400'">
+              <svg v-if="preselectedType === 'deposit'" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+              </svg>
+              <span class="font-medium">{{ preselectedType === 'deposit' ? 'Зиёд кардан' : 'Кам кардан' }}</span>
+            </div>
+          </div>
+
+          <!-- Type selector only when accessed directly (for regular payment) -->
+          <div v-else class="space-y-4">
+            <label class="text-sm font-medium text-surface-400 ml-1">Намуди транзаксия</label>
+            <div class="p-4 rounded-xl border bg-brand-500/10 border-brand-500/50 text-brand-400 flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span class="font-medium">Пардохти муқаррарӣ (2%)</span>
             </div>
           </div>
 
@@ -158,8 +132,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { ref, reactive, computed, onMounted } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import AppLayout from '../../Layouts/AppLayout.vue';
 
@@ -167,10 +141,23 @@ defineProps({
   users: Array
 });
 
+// Read query params from URL
+const urlParams = new URLSearchParams(window.location.search);
+const preselectedType = urlParams.get('type') && ['deposit', 'withdrawal'].includes(urlParams.get('type')) 
+  ? urlParams.get('type') 
+  : null;
+const preselectedUserId = urlParams.get('user_id') || null;
+
+const pageTitle = computed(() => {
+  if (preselectedType === 'deposit') return 'Зиёд кардан';
+  if (preselectedType === 'withdrawal') return 'Кам кардан';
+  return 'Пардохти нав';
+});
+
 const form = reactive({
-  user_id: '',
+  user_id: preselectedUserId ? parseInt(preselectedUserId) : '',
   amount: '',
-  type: 'withdrawal'
+  type: preselectedType || 'payment'
 });
 
 const commission = computed(() => {
@@ -215,10 +202,9 @@ const submit = () => {
     }
   }).then(response => {
     success.value = true;
-    form.user_id = '';
     form.amount = '';
     setTimeout(() => {
-        router.visit('/');
+        router.visit(preselectedType ? '/users' : '/');
     }, 2000);
   }).catch(err => {
     error.value = err.response?.data?.error || err.response?.data?.message || 'Хатогӣ рӯй дод. Лутфан дубора кӯшиш кунед.';

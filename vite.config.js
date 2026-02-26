@@ -17,4 +17,15 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-vue': ['vue', '@inertiajs/vue3'],
+                    'vendor-axios': ['axios'],
+                    'vendor-apexcharts': ['apexcharts', 'vue3-apexcharts'],
+                },
+            },
+        },
+    },
 });

@@ -28,6 +28,7 @@
                 <th class="px-6 py-4 font-semibold text-right">Начальный баланс</th>
                 <th class="px-6 py-4 font-semibold text-right">Текущий баланс</th>
                 <th class="px-6 py-4 font-semibold">Санаи сабт</th>
+                <th class="px-6 py-4 font-semibold text-center">Амалҳо</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-white/5">
@@ -52,9 +53,31 @@
                 <td class="px-6 py-4 text-sm text-surface-500">
                     {{ formatDate(user.created_at) }}
                 </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center justify-center gap-2">
+                    <Link 
+                      :href="`/payments/create?user_id=${user.id}&type=deposit`" 
+                      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Зиёд кардан
+                    </Link>
+                    <Link 
+                      :href="`/payments/create?user_id=${user.id}&type=withdrawal`" 
+                      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                      </svg>
+                      Кам кардан
+                    </Link>
+                  </div>
+                </td>
               </tr>
               <tr v-if="users.length === 0">
-                <td colspan="4" class="px-6 py-20 text-center text-surface-500">
+                <td colspan="6" class="px-6 py-20 text-center text-surface-500">
                     Ягон истифодабаранда ёфт нашуд.
                 </td>
               </tr>

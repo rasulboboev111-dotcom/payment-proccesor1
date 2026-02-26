@@ -151,10 +151,10 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, defineAsyncComponent } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '../Layouts/AppLayout.vue';
-import VueApexCharts from 'vue3-apexcharts';
+const apexchart = defineAsyncComponent(() => import('vue3-apexcharts'));
 
 const props = defineProps({
   users: Array,
@@ -173,7 +173,7 @@ onMounted(() => {
   isDark.value = document.documentElement.classList.contains('dark');
 });
 
-const apexchart = VueApexCharts;
+// apexchart is defined above via defineAsyncComponent
 
 const formatNumber = (num) => {
   return parseFloat(num).toLocaleString('en-US', {
